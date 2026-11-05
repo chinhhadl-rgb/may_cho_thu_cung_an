@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Smart Pet Feeder - Điều Khiển Tự Động</title>
+  
+  <!-- Telegram Web App SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- MQTT.js Browser CDN (v4.3.7 chuẩn EMQX Cloud, kèm CDN dự phòng) -->
+  <script src="https://unpkg.com/mqtt@4.3.7/dist/mqtt.min.js"></script>
+  <script>
+    if (!window.mqtt) {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"><\/script>');
+    }
+  </script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Modular CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- 1. HEADER SECTION -->
+    <header class="glass-card header-card">
+      <div class="header-top">
+        <div class="brand-group">
+          <div class="brand-icon">🐾</div>
+          <div>
+            <div class="brand-title">Smart Pet Feeder</div>
+            <div class="brand-subtitle" id="deviceSubtitle">ID: esp32-feeder-01</div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button id="btnOpenSettings" class="btn-settings-icon" title="Cấu hình kết nối Broker">⚙️</button>
+          <div id="deviceStatusBadge" class="badge">
+            <span id="deviceStatusDot" class="status-dot offline"></span>
+            <span id="deviceStatusText">ESP32 Offline</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-badges">
+        <!-- EMQX Cloud Status -->
+        <div class="badge">
+          <span id="mqttStatusDot" class="status-dot connecting"></span>
+          <span id="mqttStatusText">MQTT: Đang kết nối...</span>
+        </div>
+
+        <!-- Wi-Fi RSSI -->
+        <div class="badge" id="wifiBadge" title="Cường độ sóng Wi-Fi">
+          <div class="wifi-signal wifi-none" id="wifiSignalBars">
+            <div class="wifi-bar"></div>
+            <div class="wifi-bar"></div>
+            <div class="wifi-bar"></div>
+            <div class="wifi-bar"></div>
+          </div>
+          <span id="wifiRssiText">-- dBm</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. ALERT BANNER (HYSTERESIS: < 20% SHOW, >= 25% HIDE) -->
+    <div id="alertBanner" class="alert-banner">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text">
+        <strong>CẢNH BÁO:</strong> Phễu sắp hết hạt (<span id="alertLevelText">--</span>%), vui lòng nạp thêm thức ăn cho thú cưng!
+      </div>
+    </div>
+
+    <!-- 3. CENTRAL GAUGE: MỨC THỨC ĂN PHỄU (LEVEL_PCT) -->
+    <main class="glass-card gauge-card">
+      <div class="gauge-header">
+        <span class="section-title">Lượng Hạt Trong Phễu</span>
+        <span id="gaugeStatusText" class="badge" style="font-size: 0.68rem;">Chưa có dữ liệu</span>
+      </div>
+
+      <div class="gauge-wrapper">
+        <svg class="gauge-svg" viewBox="0 0 200 200">
+          <circle class="gauge-track" cx="100" cy="100" r="90" />
+          <circle id="gaugeProgressCircle" class="gauge-progress" cx="100" cy="100" r="90" />
+        </svg>
+
+        <div class="gauge-content">
+          <div class="gauge-icon" id="gaugeIcon">🥣</div>
+          <div class="gauge-percent" id="foodPercent">--%</div>
+          <div class="gauge-label">MỨC HẠT</div>
+          <div class="gauge-subtext" id="foodDistanceHint">Cảm biến HC-SR04</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 4. QUICK STATS: BỮA ĂN HÔM NAY & CẢM BIẾN HC-SR04 -->
+    <div class="stats-grid">
+      <!-- Thẻ bữa ăn -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Bữa Ăn Hôm Nay</span>
+          <span class="stat-icon">🍖</span>
+        </div>
+        <div>
+          <div class="stat-value" id="mealCountText">-- / 6</div>
+          <div class="mini-progress-bar">
+            <div id="mealProgressFill" class="mini-progress-fill"></div>
+          </div>
+        </div>
+        <div class="stat-subtext" id="mealLimitNotice">Định mức tối đa: 6 bữa/ngày</div>
+      </div>
+
+      <!-- Thẻ trạng thái cảm biến HC-SR04 -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Cảm Biến Siêu Âm</span>
+          <span class="stat-icon">📡</span>
+        </div>
+        <div>
+          <div class="stat-value" id="sensorStatusValue" style="font-size: 1.05rem;">
+            <span class="sensor-ok">● SẴN SÀNG</span>
+          </div>
+          <div class="stat-subtext" style="margin-top: 6px;">HC-SR04 Đo Mức Hạt</div>
+        </div>
+        <div class="stat-subtext" id="lastUpdatedTime">Cập nhật: --:--:--</div>
+      </div>
+    </div>
+
+    <!-- 5. INTERACTION AREA: NÚT XẢ HẠT (RULE 1 & RULE 3) -->
+    <section class="glass-card control-card">
+      <button id="btnFeedNow" class="btn-feed">
+        <span id="btnFeedIcon">🍖</span>
+        <span id="btnFeedText">CHO ĂN NGAY</span>
+        <span id="btnFeedCountdown" class="countdown-tag" style="display: none;">60s</span>
+      </button>
+
+      <div class="control-hint">
+        <span>⏱️ Giãn cách: 60s/lần</span>
+        <span id="controlStatusHint">Khởi tạo...</span>
+      </div>
+    </section>
+
+    <!-- 6. LIVE EVENT LOGS TERMINAL -->
+    <section class="glass-card logs-card">
+      <div class="logs-header">
+        <span class="section-title">Nhật Ký Hoạt Động (Live Logs)</span>
+        <div class="logs-actions">
+          <button class="btn-text" onclick="UI.clearLogs()">Xóa</button>
+        </div>
+      </div>
+      <div class="logs-console" id="logConsole"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      Pet Feeder IoT • Layer 4 Web Application • MQTT QoS 1
+    </footer>
+
+  </div>
+
+  <!-- 7. MODAL CẤU HÌNH BROKER -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ Cấu Hình Máy Chủ MQTT</div>
+        <button id="btnCloseSettings" class="btn-text" style="font-size: 1rem;">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">WSS Broker Endpoint:</label>
+        <input type="text" id="inputBrokerUrl" class="form-input" placeholder="wss://...:8084/mqtt">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Username:</label>
+        <input type="text" id="inputUsername" class="form-input" placeholder="petfeeder_esp32">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password:</label>
+        <input type="password" id="inputPassword" class="form-input" placeholder="123">
+      </div>
+
+      <div class="modal-footer">
+        <button id="btnResetSettings" class="btn-secondary">Mặc Định</button>
+        <button id="btnSaveSettings" class="btn-primary">Lưu & Kết Nối</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modular Scripts theo thứ tự dependency -->
+  <script src="js/config.js"></script>
+  <script src="js/mqtt-service.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
