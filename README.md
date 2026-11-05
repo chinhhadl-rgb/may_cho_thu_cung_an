@@ -17,6 +17,7 @@ d:\web_iot\
 │   ├── mqtt-service.js   # Module quản lý kết nối MQTT.js, Subscribe QoS 1, Publish xả hạt
 │   ├── ui.js             # Module cập nhật DOM: Vòng Gauge, Thẻ thống kê, Banner cảnh báo, Console Logs
 │   └── app.js            # Controller chính: Xử lý 3 Business Rules, Cooldown 60s, Hysteresis, Telegram Web App
+├── database.sql          # Schema SQL tham khảo; chỉ chạy thủ công, ứng dụng không tự thực thi
 ```
 
 ---
