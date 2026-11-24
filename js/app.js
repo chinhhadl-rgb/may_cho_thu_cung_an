@@ -29,6 +29,36 @@ const App = {
     // 5. Kết nối tới Broker
     UI.setMqttStatus('connecting', 'MQTT: Đang kết nối...');
     mqttService.connect();
+
+    // 6. Kiểm tra kết nối MySQL XAMPP qua Backend API
+    this.checkBackendStatus();
+    setInterval(() => this.checkBackendStatus(), 10000);
+  },
+
+  // Kiểm tra trạng thái Backend & MySQL XAMPP
+  async checkBackendStatus() {
+    try {
+      const res = await fetch('/api/status');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.database?.connected) {
+          UI.setDbStatus('online', 'MySQL: Sẵn sàng');
+
+          // Khôi phục chính xác số bữa hôm nay từ Database (Single Source of Truth)
+          if (typeof json.feeds_today === 'number') {
+            this.state.feedsToday = Math.max(this.state.feedsToday, json.feeds_today);
+            UI.setMealStats(this.state.feedsToday, this.state.maxFeedsPerDay);
+            this.evaluateButtonState();
+          }
+        } else {
+          UI.setDbStatus('offline', 'MySQL: Chưa bật XAMPP');
+        }
+      } else {
+        UI.setDbStatus('offline', 'MySQL: Offline');
+      }
+    } catch (e) {
+      UI.setDbStatus('offline', 'MySQL: Chạy file thô');
+    }
   },
 
   // Telegram Web App SDK Integration
@@ -104,8 +134,10 @@ const App = {
     UI.setFoodGauge(pct);
     this.handleHysteresisRule(pct);
 
-    // 2. Cập nhật bữa ăn trong ngày & Rule 3
-    if (typeof data.feeds_today === 'number') this.state.feedsToday = data.feeds_today;
+    // 2. Cập nhật bữa ăn trong ngày & Rule 3 (Chống tụt lùi số bữa khi ESP32 khởi động lại)
+    if (typeof data.feeds_today === 'number') {
+      this.state.feedsToday = Math.max(this.state.feedsToday, data.feeds_today);
+    }
     if (typeof data.max_feeds_per_day === 'number') this.state.maxFeedsPerDay = data.max_feeds_per_day;
     UI.setMealStats(this.state.feedsToday, this.state.maxFeedsPerDay);
 
@@ -280,6 +312,10 @@ const App = {
       // Cập nhật timestamp & lưu trữ localStorage
       this.state.lastFeedTimestamp = now;
       localStorage.setItem('pet_feeder_last_feed', now.toString());
+
+      // Tăng số bữa ăn hôm nay & cập nhật giao diện
+      this.state.feedsToday += 1;
+      UI.setMealStats(this.state.feedsToday, this.state.maxFeedsPerDay);
 
       // Kích hoạt đếm ngược 60 giây
       this.startCountdown(60);

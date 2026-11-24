@@ -1,0 +1,7 @@
+{
+  "wokwi.diagramFile": "firmware/diagram.json",
+  "files.associations": {
+    "*.ino": "cpp",
+    "*.h": "cpp"
+  }
+}

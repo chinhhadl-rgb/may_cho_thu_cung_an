@@ -1,0 +1,1261 @@
+[
+    {
+        "id": "a7cba250557fe390",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "11e32c644128e0b6",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "tab_petfeeder_arch",
+        "type": "tab",
+        "label": "Pet Feeder - Kien truc 4 tang (Tang 3-4)",
+        "disabled": false,
+        "info": "Tang 3: Node-RED nhan/xu ly MQTT. Tang 4: Dashboard hien thi muc thuc an, trang thai, so lan cho an va gui lenh FEED_NOW."
+    },
+    {
+        "id": "08c27321c2f8e349",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "bc6bb3263715ef79",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "b9d7f720fd4d0ec7",
+        "type": "telegram bot",
+        "botname": "pet_feeder_huit_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "testenvironment": false,
+        "updatemode": "polling",
+        "pollinterval": 300,
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": 6667,
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbothost": "0.0.0.0",
+        "localbotport": 8443,
+        "publicbotport": 8443,
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "tls_emqx_petfeeder",
+        "type": "tls-config",
+        "name": "EMQX TLS (xac thuc may chu)",
+        "cert": "",
+        "key": "",
+        "p12": "",
+        "p12name": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "h12e1a20.ala.eu-central-1.emqxsl.com",
+        "verifyservercert": true,
+        "alpnprotocol": "",
+        "certEnv": "",
+        "keyEnv": "",
+        "caEnv": ""
+    },
+    {
+        "id": "broker_emqx_petfeeder",
+        "type": "mqtt-broker",
+        "name": "EMQX Cloud - Pet Feeder TLS",
+        "broker": "h12e1a20.ala.eu-central-1.emqxsl.com",
+        "port": "8883",
+        "tls": "tls_emqx_petfeeder",
+        "clientid": "node-red-petfeeder-dashboard",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ui_base_petfeeder",
+        "type": "ui-base",
+        "name": "Pet Feeder Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-control",
+            "ui-notification"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "ui_theme_petfeeder",
+        "type": "ui-theme",
+        "name": "Pet Feeder Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#8b1e2d",
+            "bgPage": "#f6f7f9",
+            "groupBg": "#ffffff",
+            "groupOutline": "#dedfe3"
+        },
+        "sizes": {
+            "pagePadding": "18px",
+            "groupGap": "12px",
+            "groupBorderRadius": "10px",
+            "widgetGap": "10px"
+        }
+    },
+    {
+        "id": "ui_page_petfeeder",
+        "type": "ui-page",
+        "name": "Giám sát khay thức ăn",
+        "ui": "ui_base_petfeeder",
+        "path": "pet-feeder",
+        "icon": "pets",
+        "layout": "grid",
+        "theme": "ui_theme_petfeeder",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": true
+    },
+    {
+        "id": "ui_group_petfeeder",
+        "type": "ui-group",
+        "name": "Giám sát và điều khiển",
+        "page": "ui_page_petfeeder",
+        "width": "12",
+        "height": "",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": "false"
+    },
+    {
+        "id": "mysql_db_config",
+        "type": "MySQLdatabase",
+        "name": "Local_pet_feeder_db",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "pet_feeder_db",
+        "tz": "+07:00",
+        "charset": "UTF8"
+    },
+    {
+        "id": "4ffe3ec891e262db",
+        "type": "ui-link",
+        "name": "Link 1",
+        "ui": "ui_base_petfeeder",
+        "path": "/",
+        "icon": "home",
+        "order": 2,
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "sinric_ws_client",
+        "type": "websocket-client",
+        "path": "wss://ws.sinric.pro",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "30",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "sinric_ws_auth_client",
+        "type": "websocket-client",
+        "path": "wss://ws.sinric.pro",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "30",
+        "subprotocol": "",
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "appkey",
+                "valueType": "other",
+                "valueValue": "3160c48e-ef91-4474-b52b-ee6e7b0d66bb"
+            },
+            {
+                "keyType": "other",
+                "keyValue": "deviceids",
+                "valueType": "other",
+                "valueValue": "6b03202c7d04ce9fd6601c0a"
+            },
+            {
+                "keyType": "other",
+                "keyValue": "platform",
+                "valueType": "other",
+                "valueValue": "nodejs"
+            }
+        ]
+    },
+    {
+        "id": "8e1f8ff597a8706f",
+        "type": "mqtt in",
+        "z": "a7cba250557fe390",
+        "name": "Dữ liệu ESP32",
+        "topic": "petfeeder/telemetry",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "08c27321c2f8e349",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 420,
+        "y": 700,
+        "wires": [
+            [
+                "4a39e7cf4f14cc4c"
+            ]
+        ]
+    },
+    {
+        "id": "99cc9bf0c9b1a89b",
+        "type": "inject",
+        "z": "a7cba250557fe390",
+        "name": "Nút Cho Ăn Ngay",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\": \"FEED\"}",
+        "payloadType": "json",
+        "x": 500,
+        "y": 820,
+        "wires": [
+            [
+                "cf1512deaaa6fe95"
+            ]
+        ]
+    },
+    {
+        "id": "44136bf1566d2d0d",
+        "type": "mqtt out",
+        "z": "a7cba250557fe390",
+        "name": "Gửi Lệnh Feed",
+        "topic": "petfeeder/control",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "bc6bb3263715ef79",
+        "x": 720,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "4a39e7cf4f14cc4c",
+        "type": "switch",
+        "z": "a7cba250557fe390",
+        "name": "Kiểm tra hạt < 20%",
+        "property": "payload.food_level",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "20%",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": true,
+        "outputs": 1,
+        "x": 210,
+        "y": 800,
+        "wires": [
+            [
+                "6ed35250e5f95c6c"
+            ]
+        ]
+    },
+    {
+        "id": "6ed35250e5f95c6c",
+        "type": "change",
+        "z": "a7cba250557fe390",
+        "name": "cảnh bảo",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.chatId",
+                "pt": "msg",
+                "to": "8518694966",
+                "tot": "num"
+            },
+            {
+                "t": "set",
+                "p": "payload.type",
+                "pt": "msg",
+                "to": "message",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.content",
+                "pt": "msg",
+                "to": "⚠️ CẢNH BÁO: Mức hạt trong phễu còn dưới 20%, vui lòng bổ sung thức ăn!",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 960,
+        "wires": [
+            [
+                "ea2d20918b2bcb08",
+                "e5e0503ac66b8f40"
+            ]
+        ]
+    },
+    {
+        "id": "cf1512deaaa6fe95",
+        "type": "function",
+        "z": "a7cba250557fe390",
+        "name": "Kiểm tra khoảng cách 60s",
+        "func": "let lastFeed = context.get('lastFeedTime') || 0;\nlet now = Date.now();\nif (now - lastFeed < 60000) {\n    node.warn(\"Cảnh báo: Khoảng cách giữa 2 lần cho ăn phải >= 60 giây!\");\n    return null; \n}\ncontext.set('lastFeedTime', now);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 880,
+        "wires": [
+            [
+                "44136bf1566d2d0d"
+            ]
+        ]
+    },
+    {
+        "id": "ea2d20918b2bcb08",
+        "type": "ui_toast",
+        "z": "a7cba250557fe390",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "thông báo",
+        "x": 480,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "e5e0503ac66b8f40",
+        "type": "telegram sender",
+        "z": "a7cba250557fe390",
+        "name": "",
+        "bot": "b9d7f720fd4d0ec7",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 730,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f4c0e66308a87181",
+        "type": "inject",
+        "z": "a7cba250557fe390",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 300,
+        "y": 1120,
+        "wires": [
+            [
+                "6ed35250e5f95c6c"
+            ]
+        ]
+    },
+    {
+        "id": "mqttin_sensor_pet",
+        "type": "mqtt in",
+        "z": "tab_petfeeder_arch",
+        "name": "Nhận telemetry cảm biến",
+        "topic": "petfeeder/sensor",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "broker_emqx_petfeeder",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 430,
+        "y": 200,
+        "wires": [
+            [
+                "debug_sensor_raw",
+                "fn_parse_sensor",
+                "fn_rule2_low_food",
+                "fn_prep_sensor_sql",
+                "ha_api_prep_level"
+            ]
+        ]
+    },
+    {
+        "id": "debug_sensor_raw",
+        "type": "debug",
+        "z": "tab_petfeeder_arch",
+        "name": "Tầng 3 - JSON sensor nhận từ MQTT",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 750,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "fn_parse_sensor",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "Parse JSON + tách dữ liệu dashboard",
+        "func": "let d = msg.payload;\ntry {\n    if (Buffer.isBuffer(d)) d = d.toString('utf8');\n    if (typeof d === 'string') d = JSON.parse(d);\n    if (!d || typeof d !== 'object') return null;\n    const level = Number(d.level_pct);\n    if (!Number.isFinite(level)) return null;\n    const feeds = (d.feeds_today !== undefined) ? d.feeds_today : '--';\n    const maxFeeds = (d.max_feeds_per_day !== undefined) ? d.max_feeds_per_day : '--';\n    const rssi = (d.wifi_rssi !== undefined) ? d.wifi_rssi : '--';\n    const sensorText = d.sensor_ok === false ? 'Lỗi cảm biến' : 'Cảm biến đang hoạt động';\n    return [\n        { payload: Math.max(0, Math.min(100, level)) },\n        { payload: Math.max(0, Math.min(100, level)), topic: 'Mức thức ăn' },\n        { payload: String(feeds) + ' / ' + String(maxFeeds) },\n        { payload: sensorText },\n        { payload: String(rssi) + ' dBm' }\n    ];\n} catch (err) {\n    return null;\n}",
+        "outputs": 5,
+        "x": 750,
+        "y": 200,
+        "wires": [
+            [
+                "ui_gauge_level"
+            ],
+            [
+                "ui_chart_level"
+            ],
+            [
+                "ui_text_feeds"
+            ],
+            [
+                "ui_text_sensor"
+            ],
+            [
+                "ui_text_rssi"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_level",
+        "type": "ui-gauge",
+        "z": "tab_petfeeder_arch",
+        "name": "Mức thức ăn (%)",
+        "group": "ui_group_petfeeder",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Mức thức ăn (%)",
+        "units": "%",
+        "icon": "water-percent",
+        "prefix": "",
+        "suffix": "%",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#e53935"
+            },
+            {
+                "from": "20",
+                "color": "#fb8c00"
+            },
+            {
+                "from": "50",
+                "color": "#43a047"
+            }
+        ],
+        "min": 0,
+        "max": "100",
+        "x": 1090,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ui_chart_level",
+        "type": "ui-chart",
+        "z": "tab_petfeeder_arch",
+        "group": "ui_group_petfeeder",
+        "name": "Lịch sử mức thức ăn",
+        "label": "Lịch sử mức thức ăn (%)",
+        "order": 5,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "Thời gian",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "yAxisLabel": "Mức (%)",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "0",
+        "ymax": "100",
+        "width": "6",
+        "height": "4",
+        "x": 1100,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ui_text_feeds",
+        "type": "ui-text",
+        "z": "tab_petfeeder_arch",
+        "group": "ui_group_petfeeder",
+        "order": 2,
+        "width": "4",
+        "height": "1",
+        "name": "Lượt cho ăn hôm nay (đã thực hiện / tối đa)",
+        "label": "Lượt cho ăn hôm nay",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1170,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ui_text_sensor",
+        "type": "ui-text",
+        "z": "tab_petfeeder_arch",
+        "group": "ui_group_petfeeder",
+        "order": 3,
+        "width": "4",
+        "height": "1",
+        "name": "Trạng thái cảm biến",
+        "label": "Trạng thái cảm biến",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1100,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ui_text_rssi",
+        "type": "ui-text",
+        "z": "tab_petfeeder_arch",
+        "group": "ui_group_petfeeder",
+        "order": 4,
+        "width": "4",
+        "height": "1",
+        "name": "Wi-Fi RSSI",
+        "label": "Wi-Fi RSSI",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1070,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "fn_prep_sensor_sql",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "Chuẩn bị SQL: sensor_logs",
+        "func": "let d = msg.payload;\ntry {\n    if (Buffer.isBuffer(d)) d = d.toString('utf8');\n    if (typeof d === 'string') d = JSON.parse(d);\n    \n    const level = Number(d.level_pct) || 0;\n    const feeds = Number(d.feeds_today) || 0;\n    const rssi = Number(d.wifi_rssi) || -70;\n    const sensor_ok = d.sensor_ok === false ? 0 : 1;\n    \n    msg.topic = `INSERT INTO sensor_logs (level_pct, feeds_today, wifi_rssi, sensor_ok) VALUES (${level}, ${feeds}, ${rssi}, ${sensor_ok});`;\n    return msg;\n} catch(e) {\n    return null;\n}",
+        "outputs": 1,
+        "x": 730,
+        "y": 260,
+        "wires": [
+            [
+                "mysql_node_exec"
+            ]
+        ]
+    },
+    {
+        "id": "fn_rule2_low_food",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "Rule 2: Kiểm tra hạt < 20% & Gửi Telegram",
+        "func": "let d = msg.payload;\n\nconst BOT_TOKEN = \"8877893305:AAH2Fypw0ryfngPg69ShYL7whhVTy0ewQQ8\";\nconst CHAT_ID = \"8518694966\";\nconst TELE_URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;\n\ntry {\n    if (Buffer.isBuffer(d)) d = d.toString('utf8');\n    if (typeof d === 'string') d = JSON.parse(d);\n    \n    // Nếu bấm từ nút Inject \"Test thử cảnh báo (< 20%)\" mà không phải object, tự gán level = 15%\n    let level = (d && typeof d === 'object' && d.level_pct !== undefined) ? Number(d.level_pct) : 15;\n    let forceTest = (d && d.force_test === true) || (typeof msg.payload !== 'object');\n\n    let isAlerted = context.get('lowFoodAlerted') || false;\n\n    if (level < 20) {\n        if (!isAlerted || forceTest) {\n            context.set('lowFoodAlerted', true);\n\n            // Ngõ 1: Gửi cảnh báo kèm nút bấm Inline Keyboard sang Telegram API\n            let telePayload = {\n                method: \"POST\",\n                url: TELE_URL,\n                headers: { \"Content-Type\": \"application/json\" },\n                payload: {\n                    chat_id: CHAT_ID,\n                    text: `⚠️ CẢNH BÁO KHẨN CẤP: Phễu thức ăn chỉ còn ${level}% (< 20%). Vui lòng nạp thêm hoặc bấm nút bên dưới để xả hạt khẩn cấp!`,\n                    reply_markup: {\n                        inline_keyboard: [\n                            [\n                                {\n                                    text: \"🍖 Cho ăn ngay\",\n                                    callback_data: \"FEED_FROM_TELEGRAM\"\n                                }\n                            ]\n                        ]\n                    }\n                }\n            };\n\n            // Ngõ 2: Ghi Event Logger\n            let logMsg = {\n                payload: {\n                    event: \"LOW_FOOD_ALERT\",\n                    level_pct: level,\n                    message: \"Đã gửi cảnh báo cạn hạt kèm nút bấm Telegram (< 20%)\",\n                    time: new Date().toLocaleString('vi-VN')\n                }\n            };\n\n            return [telePayload, logMsg];\n        }\n    } else if (level >= 25) {\n        context.set('lowFoodAlerted', false);\n    }\n} catch (e) {\n    node.warn(\"Lỗi xử lý Rule 2: \" + e.message);\n    return null;\n}\n\nreturn null;",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 400,
+        "wires": [
+            [
+                "http_telegram_api"
+            ],
+            [
+                "debug_event_logger_t9"
+            ]
+        ]
+    },
+    {
+        "id": "btn_force_test_tele",
+        "type": "inject",
+        "z": "tab_petfeeder_arch",
+        "name": "Test thử cảnh báo (< 20%)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"level_pct\":10,\"force_test\":true}",
+        "payloadType": "json",
+        "x": 450,
+        "y": 400,
+        "wires": [
+            [
+                "fn_rule2_low_food"
+            ]
+        ]
+    },
+    {
+        "id": "http_telegram_api",
+        "type": "http request",
+        "z": "tab_petfeeder_arch",
+        "name": "Gửi Telegram API",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.telegram.org/bot8877893305:AAH2Fypw0ryfngPg69ShYL7whhVTy0ewQQ8/sendMessage",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "application/json"
+            }
+        ],
+        "x": 1130,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqttin_status_pet",
+        "type": "mqtt in",
+        "z": "tab_petfeeder_arch",
+        "name": "Nhận trạng thái thiết bị",
+        "topic": "petfeeder/status",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "broker_emqx_petfeeder",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 440,
+        "y": 520,
+        "wires": [
+            [
+                "debug_status_raw",
+                "fn_parse_status"
+            ]
+        ]
+    },
+    {
+        "id": "debug_status_raw",
+        "type": "debug",
+        "z": "tab_petfeeder_arch",
+        "name": "Tầng 3 - JSON status nhận từ MQTT",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 740,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "fn_parse_status",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "Chuẩn hóa trạng thái thiết bị",
+        "func": "let d = msg.payload;\ntry {\n    if (Buffer.isBuffer(d)) d = d.toString(\"utf8\");\n    if (typeof d === \"string\") d = JSON.parse(d);\n    if (!d || typeof d !== \"object\") return null;\n\n    const status = String(d.status || \"\").toLowerCase();\n    const detail = String(d.detail || \"\");\n\n    let deviceText = \"\";\n    let teleAck = null;\n\n    switch (status) {\n        case \"online\":\n            deviceText = \"ONLINE - ESP32 kết nối MQTT\";\n            break;\n        case \"offline\":\n            deviceText = \"OFFLINE - ESP32 mất kết nối MQTT\";\n            break;\n        case \"feeding_started\":\n            deviceText = \"ONLINE - Đang xả hạt (ACK: Đã nhận lệnh)\";\n            teleAck = {\n                payload: {\n                    chat_id: \"8518694966\",\n                    text: \"🔔 [FEEDBACK ACK] ESP32 xác nhận: Bắt đầu kích hoạt servo xả hạt thành công!\"\n                }\n            };\n            break;\n        case \"rejected\":\n            deviceText = \"ONLINE - Từ chối xả hạt: \" + detail;\n            teleAck = {\n                payload: {\n                    chat_id: \"8518694966\",\n                    text: `⚠️ [FEEDBACK NACK] ESP32 từ chối xả hạt! Lý do: ${detail}`\n                }\n            };\n            break;\n        case \"duplicate_ignored\":\n            deviceText = \"ONLINE - Bỏ qua lệnh trùng\";\n            break;\n        case \"low_food\":\n            deviceText = \"ONLINE - Cảnh báo thức ăn thấp\";\n            break;\n        default:\n            deviceText = status ? \"Trạng thái: \" + status : \"Chưa có trạng thái\";\n    }\n\n    const low = status === \"low_food\" || d.low_food === true;\n    let alertText = low ? \"CẦN NẠP THÊM THỨC ĂN\" : \"Chưa có cảnh báo mức thức ăn thấp\";\n\n    // Trả về 3 ngõ: [Dashboard Text, Dashboard Cảnh Báo, Telegram ACK]\n    return [{ payload: deviceText }, { payload: alertText }, teleAck];\n} catch (err) {\n    return null;\n}",
+        "outputs": 3,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 560,
+        "wires": [
+            [
+                "ui_text_device"
+            ],
+            [
+                "ui_text_alert"
+            ],
+            [
+                "http_telegram_api"
+            ]
+        ]
+    },
+    {
+        "id": "ui_text_device",
+        "type": "ui-text",
+        "z": "tab_petfeeder_arch",
+        "group": "ui_group_petfeeder",
+        "order": 6,
+        "width": "6",
+        "height": "1",
+        "name": "Kết nối / trạng thái thiết bị",
+        "label": "Kết nối / trạng thái thiết bị",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 1110,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "ui_text_alert",
+        "type": "ui-text",
+        "z": "tab_petfeeder_arch",
+        "group": "ui_group_petfeeder",
+        "order": 7,
+        "width": "6",
+        "height": "1",
+        "name": "Cảnh báo thức ăn",
+        "label": "Cảnh báo thức ăn",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 1090,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "ui_button_feed",
+        "type": "ui-button",
+        "z": "tab_petfeeder_arch",
+        "group": "ui_group_petfeeder",
+        "name": "Gửi lệnh cho ăn",
+        "label": "CHO ĂN NGAY",
+        "order": 8,
+        "width": "4",
+        "height": "1",
+        "icon": "food-drumstick",
+        "payload": "FEED_NOW",
+        "payloadType": "str",
+        "buttonColor": "#8b1e2d",
+        "textColor": "#ffffff",
+        "x": 400,
+        "y": 640,
+        "wires": [
+            [
+                "fn_rule1_rate_limit"
+            ]
+        ]
+    },
+    {
+        "id": "inject_sched_morning",
+        "type": "inject",
+        "z": "tab_petfeeder_arch",
+        "name": "Lịch Sáng (07:00)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "source",
+                "v": "schedule_07:00",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 07 * * *",
+        "once": false,
+        "topic": "",
+        "payload": "FEED_NOW",
+        "payloadType": "str",
+        "x": 390,
+        "y": 700,
+        "wires": [
+            [
+                "fn_rule1_rate_limit"
+            ]
+        ]
+    },
+    {
+        "id": "inject_sched_noon",
+        "type": "inject",
+        "z": "tab_petfeeder_arch",
+        "name": "Lịch Trưa (12:00)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "source",
+                "v": "schedule_12:00",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 12 * * *",
+        "once": false,
+        "topic": "",
+        "payload": "FEED_NOW",
+        "payloadType": "str",
+        "x": 390,
+        "y": 740,
+        "wires": [
+            [
+                "fn_rule1_rate_limit"
+            ]
+        ]
+    },
+    {
+        "id": "inject_sched_evening",
+        "type": "inject",
+        "z": "tab_petfeeder_arch",
+        "name": "Lịch Tối (18:00)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "source",
+                "v": "schedule_18:00",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 18 * * *",
+        "once": false,
+        "topic": "",
+        "payload": "FEED_NOW",
+        "payloadType": "str",
+        "x": 390,
+        "y": 780,
+        "wires": [
+            [
+                "fn_rule1_rate_limit"
+            ]
+        ]
+    },
+    {
+        "id": "fn_rule1_rate_limit",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "Rule 1: Chống spam 60s + Tạo lệnh MQTT",
+        "func": "const MIN_GAP = 60000; // 60 giây\nlet lastFeed = context.get('lastFeedTime') || 0;\nlet now = Date.now();\n\nlet source = msg.source || msg.topic || \"dashboard_button\";\nlet reqId = source + \"-\" + now;\nconst CHAT_ID = \"8518694966\";\n\n// 1. NẾU CHƯA ĐỦ 60 GIÂY -> CHẶN VÀ BÁO TỪ CHỐI VỀ TELEGRAM\nif (lastFeed > 0 && (now - lastFeed < MIN_GAP)) {\n    let waitSec = Math.ceil((MIN_GAP - (now - lastFeed)) / 1000);\n    \n    let mqttMsg = null;\n    let sqlMsg = {\n        topic: `INSERT INTO feeding_logs (request_id, source, status, note) VALUES ('${reqId}', '${source}', 'REJECTED', 'Vi pham MIN_GAP 60s (con ${waitSec}s)');`\n    };\n    let teleMsg = {\n        headers: { \"Content-Type\": \"application/json\" },\n        payload: {\n            chat_id: CHAT_ID,\n            text: `🚫 TỪ CHỐI CHO ĂN: Chưa đủ 60 giây! Vui lòng chờ thêm ${waitSec} giây nữa.\\n(Nguồn: ${source})`\n        }\n    };\n    let uiMsg = {\n        payload: `BỊ CHẶN (Chờ ${waitSec}s) - Chống ăn quá liều`\n    };\n    let logMsg = {\n        payload: {\n            event: \"REJECT_FEED\",\n            reason: \"MIN_GAP_60S_VIOLATION\",\n            wait_seconds: waitSec,\n            source: source,\n            time: new Date().toLocaleString('vi-VN')\n        }\n    };\n\n    return [mqttMsg, sqlMsg, teleMsg, uiMsg, logMsg];\n}\n\n// 2. NẾU HỢP LỆ (>= 60 GIÂY) -> CHO ĂN VÀ BÁO THÀNH CÔNG VỀ TELEGRAM\ncontext.set('lastFeedTime', now);\n\nlet commandObj = {\n    command: \"FEED_NOW\",\n    request_id: reqId,\n    source: source\n};\n\nlet mqttMsg = {\n    topic: \"petfeeder/control\",\n    payload: JSON.stringify(commandObj)\n};\nlet sqlMsg = {\n    topic: `INSERT INTO feeding_logs (request_id, source, status, note) VALUES ('${reqId}', '${source}', 'SUCCESS', 'Da gui lenh xa hat thanh cong');`\n};\nlet teleMsg = {\n    headers: { \"Content-Type\": \"application/json\" },\n    payload: {\n        chat_id: CHAT_ID,\n        text: `✅ ĐÃ CHO ĂN: Lệnh xả hạt đã được kích hoạt thành công!\\n- Nguồn: ${source}\\n- Mã lệnh: ${reqId}`\n    }\n};\nlet uiMsg = {\n    payload: `ONLINE - Đã gửi lệnh cho ăn (${source})`\n};\nlet logMsg = {\n    payload: {\n        event: \"ALLOW_FEED\",\n        source: source,\n        request_id: reqId,\n        time: new Date().toLocaleString('vi-VN')\n    }\n};\n\nreturn [mqttMsg, sqlMsg, teleMsg, uiMsg, logMsg];",
+        "outputs": 5,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 700,
+        "wires": [
+            [
+                "mqttout_control_pet"
+            ],
+            [
+                "debug_event_logger_t9"
+            ],
+            [
+                "http_telegram_api"
+            ],
+            [
+                "ui_text_device"
+            ],
+            [
+                "mysql_node_exec"
+            ]
+        ]
+    },
+    {
+        "id": "mysql_node_exec",
+        "type": "mysql",
+        "z": "tab_petfeeder_arch",
+        "mydb": "mysql_db_config",
+        "name": "Ghi Database MySQL (pet_feeder_db)",
+        "x": 1150,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqttout_control_pet",
+        "type": "mqtt out",
+        "z": "tab_petfeeder_arch",
+        "name": "Gửi petfeeder/control QoS 1",
+        "topic": "petfeeder/control",
+        "qos": "1",
+        "retain": "false",
+        "broker": "broker_emqx_petfeeder",
+        "x": 1120,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "debug_event_logger_t9",
+        "type": "debug",
+        "z": "tab_petfeeder_arch",
+        "name": "Event Logger (Minh chứng Tuần 9)",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload.event",
+        "statusType": "msg",
+        "x": 1140,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "tele_receiver_in",
+        "type": "telegram receiver",
+        "z": "tab_petfeeder_arch",
+        "name": "Lắng nghe sự kiện Telegram",
+        "bot": "b9d7f720fd4d0ec7",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "hasinput": false,
+        "inputs": 0,
+        "handleallupdates": false,
+        "handleprocessupdates": false,
+        "x": 420,
+        "y": 840,
+        "wires": [
+            [
+                "fn_handle_tele_click"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "fn_handle_tele_click",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "Bắt nút bấm & Lệnh Telegram",
+        "func": "const p = msg.payload;\nif (!p) return null;\n\n// 1. Bắt sự kiện khi bấm nút Inline Keyboard trên Telegram (chấp nhận cả 2 mã)\nif (p.type === 'callback_query') {\n    if (p.content === 'FEED_NOW' || p.content === 'FEED_FROM_TELEGRAM') {\n        return {\n            payload: 'FEED_NOW',\n            source: 'telegram_inline_button'\n        };\n    }\n}\n\n// 2. Bắt lệnh gõ tay /feed trong khung chat Telegram\nif (p.type === 'message' && typeof p.content === 'string') {\n    if (p.content.trim().toLowerCase() === '/feed') {\n        return {\n            payload: 'FEED_NOW',\n            source: 'telegram_command'\n        };\n    }\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 840,
+        "wires": [
+            [
+                "fn_rule1_rate_limit"
+            ]
+        ]
+    },
+    {
+        "id": "ha_clean_sync_btn",
+        "type": "inject",
+        "z": "tab_petfeeder_arch",
+        "name": "1. BẤM ĐỒNG BỘ SANG HA",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 460,
+        "y": 900,
+        "wires": [
+            [
+                "ha_clean_sync_fn"
+            ]
+        ]
+    },
+    {
+        "id": "ha_clean_sync_fn",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "2. Tạo Sensor % & Nút bấm chuẩn HA",
+        "func": "return {\n    topic: \"homeassistant/sensor/petfeeder_level_clean/config\",\n    retain: true,\n    payload: JSON.stringify({\n        name: \"Muc thuc an trong pheu\",\n        state_topic: \"petfeeder/sensor\",\n        value_template: \"{{ value_json.level_pct }}\",\n        unit_of_measurement: \"%\",\n        state_class: \"measurement\",\n        icon: \"mdi:cup-water\",\n        unique_id: \"petfeeder_level_clean_01\",\n        device: {\n            identifiers: [\"esp32_pet_feeder_clean_01\"],\n            name: \"May Cho Thu Cung Tu Dong\",\n            manufacturer: \"Nhom 8 IoT\",\n            model: \"ESP32 Pet Feeder\"\n        }\n    })\n};",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 900,
+        "wires": [
+            [
+                "ha_clean_sync_mqtt"
+            ]
+        ]
+    },
+    {
+        "id": "ha_clean_sync_mqtt",
+        "type": "mqtt out",
+        "z": "tab_petfeeder_arch",
+        "name": "3. Gửi cấu hình lên EMQX",
+        "topic": "",
+        "qos": "1",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_emqx_petfeeder",
+        "x": 1090,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "ha_api_prep_level",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "Gửi % sang Home Assistant API",
+        "func": "let d = msg.payload;\ntry {\n    if (Buffer.isBuffer(d)) d = d.toString('utf8');\n    if (typeof d === 'string') d = JSON.parse(d);\n    if (!d || d.level_pct === undefined) return null;\n\n    const level = Number(d.level_pct);\n    if (!Number.isFinite(level)) return null;\n\n    const token = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3MTE1YzYxYTRiYzQ0NzFkOWFiYzkxZjI5NWFkN2JmZSIsImlhdCI6MTc5NTE2MjQ3OCwiZXhwIjoyMTEwNTIyNDc4fQ.vLbkmOnKMfYaKO75MyXKStzTyGNJcOPEfOslRPiKVtg\";\n\n    return {\n        method: \"POST\",\n        url: \"http://127.0.0.1:8123/api/states/sensor.muc_thuc_an_trong_pheu\",\n        headers: {\n            \"Authorization\": \"Bearer \" + token,\n            \"Content-Type\": \"application/json\"\n        },\n        payload: {\n            state: String(level),\n            attributes: {\n                unit_of_measurement: \"%\",\n                friendly_name: \"Muc thuc an trong pheu\",\n                icon: \"mdi:cup-water\"\n            }\n        }\n    };\n} catch (e) {\n    return null;\n}",
+        "outputs": 1,
+        "x": 730,
+        "y": 40,
+        "wires": [
+            [
+                "ha_api_http_post"
+            ]
+        ]
+    },
+    {
+        "id": "ha_api_http_post",
+        "type": "http request",
+        "z": "tab_petfeeder_arch",
+        "name": "POST HA State",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1120,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "sinric_ws_in_v2",
+        "type": "websocket in",
+        "z": "tab_petfeeder_arch",
+        "name": "Lắng nghe Sinric Pro (Online)",
+        "server": "",
+        "client": "sinric_ws_auth_client",
+        "x": 560,
+        "y": 980,
+        "wires": [
+            [
+                "fn_sinric_voice_handler_v2"
+            ]
+        ]
+    },
+    {
+        "id": "fn_sinric_voice_handler_v2",
+        "type": "function",
+        "z": "tab_petfeeder_arch",
+        "name": "Xử lý lệnh Voice -> FEED_NOW",
+        "func": "let data = msg.payload;\ntry {\n    if (typeof data === 'string') data = JSON.parse(data);\n    // Bắt sự kiện bật công tắc từ Google Assistant / Sinric Pro\n    if (data && data.payload && data.payload.action === 'setPowerState') {\n        const state = data.payload.value && data.payload.value.state;\n        if (state === 'On') {\n            return {\n                payload: 'FEED_NOW',\n                source: 'google_assistant'\n            };\n        }\n    }\n} catch (e) {\n    return null;\n}\nreturn null;",
+        "outputs": 1,
+        "x": 870,
+        "y": 980,
+        "wires": [
+            [
+                "fn_rule1_rate_limit"
+            ]
+        ]
+    },
+    {
+        "id": "47a3d4e2a1dc2031",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-telegrambot": "19.0.3",
+            "@flowfuse/node-red-dashboard": "1.33.0",
+            "node-red-node-mysql": "3.0.3",
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]

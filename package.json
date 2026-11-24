@@ -1,0 +1,14 @@
+{
+  "name": "pet-feeder-iot-backend",
+  "version": "1.0.0",
+  "description": "Smart Pet Feeder IoT Backend with MySQL XAMPP & MQTT",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "init-db": "node scripts/init-db.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.9.7",
+    "mqtt": "^4.3.7"
+  }
+}

@@ -7,6 +7,8 @@ const UI = {
   elements: {
     mqttStatusDot: document.getElementById('mqttStatusDot'),
     mqttStatusText: document.getElementById('mqttStatusText'),
+    dbStatusDot: document.getElementById('dbStatusDot'),
+    dbStatusText: document.getElementById('dbStatusText'),
     deviceStatusBadge: document.getElementById('deviceStatusBadge'),
     deviceStatusDot: document.getElementById('deviceStatusDot'),
     deviceStatusText: document.getElementById('deviceStatusText'),
@@ -84,6 +86,13 @@ const UI = {
     const { mqttStatusDot, mqttStatusText } = this.elements;
     if (mqttStatusDot) mqttStatusDot.className = `status-dot ${status}`;
     if (mqttStatusText) mqttStatusText.innerText = text;
+  },
+
+  // Cập nhật trạng thái Cơ sở dữ liệu MySQL XAMPP
+  setDbStatus(status, text) {
+    const { dbStatusDot, dbStatusText } = this.elements;
+    if (dbStatusDot) dbStatusDot.className = `status-dot ${status}`;
+    if (dbStatusText) dbStatusText.innerText = text;
   },
 
   // Cập nhật trạng thái thiết bị ESP32
