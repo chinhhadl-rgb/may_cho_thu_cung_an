@@ -32,6 +32,15 @@ const UI = {
     controlStatusHint: document.getElementById('controlStatusHint'),
     logConsole: document.getElementById('logConsole'),
     
+    // Lịch sử MySQL
+    historyList: document.getElementById('historyList'),
+    historyCountBadge: document.getElementById('historyCountBadge'),
+    tabFeedHistory: document.getElementById('tabFeedHistory'),
+    tabSensorHistory: document.getElementById('tabSensorHistory'),
+    tabFeedCount: document.getElementById('tabFeedCount'),
+    tabSensorCount: document.getElementById('tabSensorCount'),
+    btnRefreshHistory: document.getElementById('btnRefreshHistory'),
+
     // Modal Cấu hình
     settingsModal: document.getElementById('settingsModal'),
     inputBrokerUrl: document.getElementById('inputBrokerUrl'),
@@ -257,5 +266,140 @@ const UI = {
     if (this.elements.settingsModal) {
       this.elements.settingsModal.classList.remove('active');
     }
+  },
+
+  // Định dạng ngày giờ chuẩn hiển thị
+  formatDateTime(dateStr) {
+    if (!dateStr) return '--:--:--';
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return String(dateStr);
+      const hours = String(d.getHours()).padStart(2, '0');
+      const mins = String(d.getMinutes()).padStart(2, '0');
+      const secs = String(d.getSeconds()).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${hours}:${mins}:${secs} - ${day}/${month}/${year}`;
+    } catch (e) {
+      return String(dateStr);
+    }
+  },
+
+  // Chuyển đổi mã nguồn phát lệnh thành tên tiếng Việt thân thiện
+  formatSource(source) {
+    switch ((source || '').toLowerCase()) {
+      case 'web_custom_app':
+      case 'web_app':
+        return '🌐 Web Dashboard';
+      case 'nut':
+      case 'nut_bam':
+      case 'esp32_button':
+        return '🔘 Nút Bấm ESP32';
+      case 'scheduler':
+      case 'schedule':
+        return '⏰ Hẹn Giờ Tự Động';
+      case 'telegram_bot':
+      case 'telegram':
+        return '🤖 Telegram Bot';
+      case 'backend_api':
+        return '⚡ REST API';
+      default:
+        return source ? `📱 ${source}` : '📱 Khác';
+    }
+  },
+
+  // Hiển thị danh sách Lịch Sử Cho Ăn (feeding_logs)
+  renderFeedingHistory(items = []) {
+    const { historyList, historyCountBadge, tabFeedCount } = this.elements;
+    if (!historyList) return;
+
+    if (historyCountBadge) historyCountBadge.innerText = `${items.length} lần cho ăn`;
+    if (tabFeedCount) tabFeedCount.innerText = String(items.length);
+
+    if (!items || items.length === 0) {
+      historyList.innerHTML = `
+        <div class="history-empty">
+          <span class="empty-icon">🥣</span>
+          <span>Chưa có lịch sử xả hạt nào được ghi nhận trong MySQL.</span>
+          <span style="font-size:0.7rem; color:var(--text-dim);">Bấm "CHO ĂN NGAY" để tạo lượt đầu tiên!</span>
+        </div>
+      `;
+      return;
+    }
+
+    historyList.innerHTML = items.map((item, index) => {
+      const isSuccess = (item.status === 'SUCCESS');
+      const statusClass = isSuccess ? 'success' : 'rejected';
+      const statusText = isSuccess ? '✅ Thành công' : '⛔ Bị từ chối';
+      const itemClass = isSuccess ? 'history-item' : 'history-item rejected';
+      const timeFormatted = this.formatDateTime(item.created_at);
+      const sourceFormatted = this.formatSource(item.source);
+      const durationSec = (item.duration_ms ? (item.duration_ms / 1000).toFixed(1) : '2.0');
+      const noteText = item.note || (isSuccess ? `Mở cửa hạt ${durationSec}s` : 'Vi phạm quy tắc');
+
+      return `
+        <div class="${itemClass}">
+          <div class="history-row-top">
+            <span class="history-time">
+              <span>⏱️</span>
+              <span>${timeFormatted}</span>
+            </span>
+            <span class="history-status-tag ${statusClass}">${statusText}</span>
+          </div>
+          <div class="history-row-bottom">
+            <span class="history-source">${sourceFormatted}</span>
+            <span class="history-note">Mở: ${durationSec}s • ${this.escapeHtml(noteText)}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  // Hiển thị danh sách Lịch Sử Cảm Biến (sensor_logs)
+  renderSensorHistory(items = []) {
+    const { historyList, historyCountBadge, tabSensorCount } = this.elements;
+    if (!historyList) return;
+
+    if (historyCountBadge) historyCountBadge.innerText = `${items.length} bản ghi đo`;
+    if (tabSensorCount) tabSensorCount.innerText = String(items.length);
+
+    if (!items || items.length === 0) {
+      historyList.innerHTML = `
+        <div class="history-empty">
+          <span class="empty-icon">📡</span>
+          <span>Chưa có dữ liệu cảm biến định kỳ nào trong MySQL.</span>
+        </div>
+      `;
+      return;
+    }
+
+    historyList.innerHTML = items.map(item => {
+      const level = Number(item.level_pct) || 0;
+      const feeds = item.feeds_today !== undefined ? item.feeds_today : '--';
+      const maxFeeds = item.max_feeds_per_day || 6;
+      const rssi = item.wifi_rssi !== undefined ? `${item.wifi_rssi} dBm` : '--';
+      const isOk = (item.sensor_ok === 1 || item.sensor_ok === true);
+      const sensorTag = isOk ? '<span style="color:var(--accent-emerald)">● HC-SR04 OK</span>' : '<span style="color:var(--accent-rose)">⚠️ Lỗi cảm biến</span>';
+      const timeFormatted = this.formatDateTime(item.created_at);
+
+      return `
+        <div class="history-item sensor-item">
+          <div class="history-row-top">
+            <span class="history-time">
+              <span>⏱️</span>
+              <span>${timeFormatted}</span>
+            </span>
+            <span style="font-size:0.75rem; font-weight:700; color:var(--accent-cyan); font-family:'JetBrains Mono';">
+              🥣 ${level}% Thức ăn
+            </span>
+          </div>
+          <div class="history-row-bottom">
+            <span>Đã ăn: <strong>${feeds}/${maxFeeds} bữa</strong></span>
+            <span>📶 ${rssi} • ${sensorTag}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 };

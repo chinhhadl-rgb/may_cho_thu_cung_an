@@ -151,7 +151,40 @@
       </div>
     </section>
 
-    <!-- 6. LIVE EVENT LOGS TERMINAL -->
+    <!-- 6. FEEDING HISTORY SECTION (MYSQL XAMPP) -->
+    <section class="glass-card history-card">
+      <div class="history-header">
+        <div class="history-title-group">
+          <span class="section-title">📜 Lịch Sử Cho Ăn (MySQL)</span>
+          <span id="historyCountBadge" class="badge-mini">0 bản ghi</span>
+        </div>
+        <div class="history-actions">
+          <button id="btnRefreshHistory" class="btn-text" title="Tải lại từ MySQL">🔄 Làm mới</button>
+        </div>
+      </div>
+
+      <!-- Tab chuyển đổi: Lịch sử cho ăn vs Cảm biến -->
+      <div class="history-tabs">
+        <button id="tabFeedHistory" class="history-tab active" onclick="App.switchHistoryTab('feeding')">
+          🍖 Lần Cho Ăn (<span id="tabFeedCount">0</span>)
+        </button>
+        <button id="tabSensorHistory" class="history-tab" onclick="App.switchHistoryTab('sensor')">
+          📡 Mức Cảm Biến (<span id="tabSensorCount">0</span>)
+        </button>
+      </div>
+
+      <!-- Danh sách lịch sử cuộn mượt -->
+      <div class="history-list-wrapper">
+        <div id="historyList" class="history-list">
+          <div class="history-empty">
+            <span class="empty-icon">⏳</span>
+            <span>Đang tải lịch sử từ MySQL XAMPP...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. LIVE EVENT LOGS TERMINAL -->
     <section class="glass-card logs-card">
       <div class="logs-header">
         <span class="section-title">Nhật Ký Hoạt Động (Live Logs)</span>

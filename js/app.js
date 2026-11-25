@@ -8,7 +8,10 @@ const App = {
     feedsToday: 0,
     maxFeedsPerDay: APP_CONFIG.rules.defaultMaxFeeds,
     lastFeedTimestamp: 0,       // Lần xả hạt gần nhất (Rule 1)
-    countdownTimerId: null
+    countdownTimerId: null,
+    currentHistoryTab: 'feeding', // 'feeding' hoặc 'sensor'
+    cachedFeedingLogs: [],
+    cachedSensorLogs: []
   },
 
   init() {
@@ -33,6 +36,10 @@ const App = {
     // 6. Kiểm tra kết nối MySQL XAMPP qua Backend API
     this.checkBackendStatus();
     setInterval(() => this.checkBackendStatus(), 10000);
+
+    // 7. Tải lịch sử cho ăn từ MySQL XAMPP
+    this.loadHistory();
+    setInterval(() => this.loadHistory(true), 20000);
   },
 
   // Kiểm tra trạng thái Backend & MySQL XAMPP
@@ -58,6 +65,67 @@ const App = {
       }
     } catch (e) {
       UI.setDbStatus('offline', 'MySQL: Chạy file thô');
+    }
+  },
+
+  // Chuyển đổi tab lịch sử giữa 'feeding' và 'sensor'
+  switchHistoryTab(tabName) {
+    this.state.currentHistoryTab = tabName;
+    const { tabFeedHistory, tabSensorHistory } = UI.elements;
+
+    if (tabFeedHistory && tabSensorHistory) {
+      if (tabName === 'feeding') {
+        tabFeedHistory.classList.add('active');
+        tabSensorHistory.classList.remove('active');
+        UI.renderFeedingHistory(this.state.cachedFeedingLogs);
+      } else {
+        tabFeedHistory.classList.remove('active');
+        tabSensorHistory.classList.add('active');
+        UI.renderSensorHistory(this.state.cachedSensorLogs);
+      }
+    }
+  },
+
+  // Tải dữ liệu lịch sử từ MySQL Backend
+  async loadHistory(silent = false) {
+    const btnRefresh = UI.elements.btnRefreshHistory;
+    if (!silent && btnRefresh) {
+      btnRefresh.innerHTML = '<span class="spin-anim">🔄</span> Đang tải...';
+    }
+
+    try {
+      // 1. Tải lịch sử cho ăn (feeding_logs)
+      const feedRes = await fetch('/api/history/feeding?limit=30');
+      if (feedRes.ok) {
+        const feedJson = await feedRes.json();
+        if (feedJson.success && Array.isArray(feedJson.data)) {
+          this.state.cachedFeedingLogs = feedJson.data;
+        }
+      }
+
+      // 2. Tải lịch sử cảm biến (sensor_logs)
+      const sensorRes = await fetch('/api/history/sensor?limit=30');
+      if (sensorRes.ok) {
+        const sensorJson = await sensorRes.json();
+        if (sensorJson.success && Array.isArray(sensorJson.data)) {
+          this.state.cachedSensorLogs = sensorJson.data;
+        }
+      }
+
+      // 3. Hiển thị tab đang chọn
+      this.switchHistoryTab(this.state.currentHistoryTab);
+
+      if (!silent) {
+        UI.addLog('INFO', `Đã đồng bộ lịch sử: ${this.state.cachedFeedingLogs.length} lần cho ăn, ${this.state.cachedSensorLogs.length} bản ghi đo.`);
+      }
+    } catch (err) {
+      if (!silent) {
+        console.warn('Lỗi tải lịch sử từ MySQL:', err.message);
+      }
+    } finally {
+      if (btnRefresh) {
+        btnRefresh.innerHTML = '🔄 Làm mới';
+      }
     }
   },
 
@@ -319,6 +387,9 @@ const App = {
 
       // Kích hoạt đếm ngược 60 giây
       this.startCountdown(60);
+
+      // Tự động tải lại lịch sử sau 1.5s để cập nhật lượt vừa cho ăn từ MySQL
+      setTimeout(() => this.loadHistory(true), 1500);
     } catch (err) {
       this.triggerHaptic('error');
       alert('Không thể gửi lệnh: ' + err.message);
@@ -333,6 +404,12 @@ const App = {
     const btnFeed = document.getElementById('btnFeedNow');
     if (btnFeed) {
       btnFeed.addEventListener('click', () => this.handleFeedClick());
+    }
+
+    // Nút làm mới lịch sử từ MySQL
+    const btnRefreshHistory = document.getElementById('btnRefreshHistory');
+    if (btnRefreshHistory) {
+      btnRefreshHistory.addEventListener('click', () => this.loadHistory());
     }
 
     // Nút mở modal Settings

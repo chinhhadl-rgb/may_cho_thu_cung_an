@@ -123,6 +123,10 @@ Dự án đã được cấu hình sẵn sàng với extension **Wokwi Simulator
      * `MySQL: Sẵn sàng`
      * Vòng đo lượng hạt Gauge SVG động.
      * Nút **🍖 CHO ĂN NGAY** (giãn cách an toàn 60s và giới hạn 6 bữa/ngày).
+     * **📜 Lịch sử cho ăn thời gian thực (Feeding History):**
+       * Tab 1: Nhật ký các lần xả hạt (`feeding_logs` từ MySQL XAMPP) hiển thị ngày giờ, nguồn kích hoạt (Web, Nút bấm, Hẹn giờ), trạng thái và thời lượng mở cửa hạt.
+       * Tab 2: Lịch sử cảm biến định kỳ (`sensor_logs` từ MySQL XAMPP) theo dõi % mức thức ăn, số bữa tích lũy và cường độ sóng WiFi.
+       * Tự động đồng bộ và có nút **🔄 Làm mới**.
 
 ---
 

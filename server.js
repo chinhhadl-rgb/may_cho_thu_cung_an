@@ -86,6 +86,8 @@ function startMqttWorker() {
             // Ta giữ số bữa thực tế từ DB để không bị tụt lùi về 0!
             if (typeof data.feeds_today === 'number' && data.feeds_today < todayDbCount) {
               data.feeds_today = todayDbCount;
+            } else if (typeof data.feeds_today !== 'number') {
+              data.feeds_today = todayDbCount;
             }
 
             const saved = await db.saveSensorLog(data);
